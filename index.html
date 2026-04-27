@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Affiliate Product Catalog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f1e8 0%, #ebe5d9 100%);
+            color: #4a4a4a;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #6b5d4f;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #8a7968;
+            font-size: 1.1em;
+            font-weight: 300;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1.2em;
+            color: #8a7968;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .website-section {
+            margin-bottom: 60px;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .website-header {
+            background: linear-gradient(135deg, #d4c4b0 0%, #c9b8a3 100%);
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .website-name {
+            font-size: 2em;
+            color: #4a4a4a;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .category-section {
+            margin-bottom: 40px;
+        }
+
+        .category-title {
+            font-size: 1.3em;
+            color: #6b5d4f;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #c9b8a3;
+            font-weight: 400;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border-color: #c9b8a3;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #e8e2d5 0%, #d4cec1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8a7968;
+            font-size: 3em;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-name {
+            font-size: 1.1em;
+            color: #4a4a4a;
+            margin-bottom: 10px;
+            font-weight: 500;
+            min-height: 50px;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e8e2d5;
+        }
+
+        .product-price {
+            color: #6b5d4f;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .product-link {
+            background: linear-gradient(135deg, #c9b8a3 0%, #b8a794 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .product-link:hover {
+            background: linear-gradient(135deg, #b8a794 0%, #a89685 100%);
+            transform: scale(1.05);
+        }
+
+        .product-description {
+            color: #6b5d4f;
+            font-size: 0.9em;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .stats {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 15px;
+            margin-top: 40px;
+            color: #6b5d4f;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 15px;
+            }
+
+            .website-name {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>My Curated Finds</h1>
+            <p class="subtitle">Handpicked affiliate products, updated daily</p>
+        </header>
+
+        <div id="catalog" class="loading">Loading your catalog</div>
+
+        <div id="stats" style="display: none;" class="stats"></div>
+    </div>
+
+    <script>
+        // 🔧 CONFIGURATION - REPLACE WITH YOUR GOOGLE SHEET ID
+        const SHEET_ID = '1G4IAnNpr4uUtRowbtUsKRksJ5cM3K6VAtDcrqtkO5-Q';
+        const SHEET_NAME = 'Sheet1'; // Change if your sheet has a different name
+        
+        // Google Sheets public CSV URL
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
+
+        async function loadProducts() {
+            const catalogDiv = document.getElementById('catalog');
+            const statsDiv = document.getElementById('stats');
+
+            try {
+                // Fetch data from Google Sheets
+                const response = await fetch(SHEET_URL);
+                const csvText = await response.text();
+                
+                // Parse CSV
+                const products = parseCSV(csvText);
+                
+                if (products.length === 0) {
+                    catalogDiv.innerHTML = '<p style="text-align: center; padding: 40px;">No products found. Add some products to your Google Sheet!</p>';
+                    return;
+                }
+
+                // Organize products by Website > Category
+                const organized = organizeProducts(products);
+                
+                // Render catalog
+                catalogDiv.innerHTML = '';
+                let totalProducts = 0;
+
+                for (const [website, categories] of Object.entries(organized)) {
+                    const websiteSection = document.createElement('div');
+                    websiteSection.className = 'website-section';
+
+                    const websiteHeader = document.createElement('div');
+                    websiteHeader.className = 'website-header';
+                    websiteHeader.innerHTML = `<h2 class="website-name">${website}</h2>`;
+                    websiteSection.appendChild(websiteHeader);
+
+                    for (const [category, items] of Object.entries(categories)) {
+                        const categorySection = document.createElement('div');
+                        categorySection.className = 'category-section';
+
+                        const categoryTitle = document.createElement('h3');
+                        categoryTitle.className = 'category-title';
+                        categoryTitle.textContent = category;
+                        categorySection.appendChild(categoryTitle);
+
+                        const productGrid = document.createElement('div');
+                        productGrid.className = 'product-grid';
+
+                        items.forEach(product => {
+                            totalProducts++;
+                            const card = createProductCard(product);
+                            productGrid.appendChild(card);
+                        });
+
+                        categorySection.appendChild(productGrid);
+                        websiteSection.appendChild(categorySection);
+                    }
+
+                    catalogDiv.appendChild(websiteSection);
+                }
+
+                // Show stats
+                statsDiv.style.display = 'block';
+                statsDiv.innerHTML = `
+                    <strong>${totalProducts}</strong> products across 
+                    <strong>${Object.keys(organized).length}</strong> websites
+                    <br><small style="margin-top: 10px; display: block; opacity: 0.7;">
+                        Last updated: ${new Date().toLocaleString()}
+                    </small>
+                `;
+
+            } catch (error) {
+                console.error('Error loading products:', error);
+                catalogDiv.innerHTML = `
+                    <div class="error-message">
+                        <strong>Oops!</strong> Couldn't load products. 
+                        <br>Make sure your Google Sheet is public and the Sheet ID is correct.
+                        <br><small>Error: ${error.message}</small>
+                    </div>
+                `;
+            }
+        }
+
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+            const products = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+
+                const values = parseCSVLine(lines[i]);
+                const product = {};
+
+                headers.forEach((header, index) => {
+                    product[header] = values[index] || '';
+                });
+
+                // Only add if it has required fields
+                if (product['Product Name'] && product['Website'] && product['Affiliate Link']) {
+                    products.push(product);
+                }
+            }
+
+            return products;
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+
+            result.push(current.trim());
+            return result;
+        }
+
+        function organizeProducts(products) {
+            const organized = {};
+
+            products.forEach(product => {
+                const website = product.Website || 'Other';
+                const category = product.Category || 'General';
+
+                if (!organized[website]) {
+                    organized[website] = {};
+                }
+
+                if (!organized[website][category]) {
+                    organized[website][category] = [];
+                }
+
+                organized[website][category].push(product);
+            });
+
+            return organized;
+        }
+
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+
+            // Image
+            const imageDiv = document.createElement('div');
+            imageDiv.className = 'product-image';
+            
+            if (product['Image URL'] && product['Image URL'].trim()) {
+                const img = document.createElement('img');
+                img.src = product['Image URL'];
+                img.alt = product['Product Name'];
+                img.onerror = function() {
+                    this.parentElement.innerHTML = '📦';
+                };
+                imageDiv.appendChild(img);
+            } else {
+                imageDiv.textContent = '📦';
+            }
+            card.appendChild(imageDiv);
+
+            // Product name
+            const name = document.createElement('div');
+            name.className = 'product-name';
+            name.textContent = product['Product Name'];
+            card.appendChild(name);
+
+            // Description (if available)
+            if (product.Description && product.Description.trim()) {
+                const desc = document.createElement('div');
+                desc.className = 'product-description';
+                desc.textContent = product.Description;
+                card.appendChild(desc);
+            }
+
+            // Meta section (price and link)
+            const meta = document.createElement('div');
+            meta.className = 'product-meta';
+
+            if (product.Price && product.Price.trim()) {
+                const price = document.createElement('div');
+                price.className = 'product-price';
+                price.textContent = product.Price;
+                meta.appendChild(price);
+            }
+
+            const link = document.createElement('a');
+            link.className = 'product-link';
+            link.href = product['Affiliate Link'];
+            link.target = '_blank';
+            link.textContent = 'View Deal';
+            link.onclick = (e) => e.stopPropagation();
+            meta.appendChild(link);
+
+            card.appendChild(meta);
+
+            // Make entire card clickable
+            card.onclick = () => {
+                window.open(product['Affiliate Link'], '_blank');
+            };
+
+            return card;
+        }
+
+        // Load products on page load
+        loadProducts();
+
+        // Optional: Auto-refresh every 5 minutes
+        setInterval(loadProducts, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
