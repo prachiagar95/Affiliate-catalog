@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Affiliate Product Catalog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,83 +12,265 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --cream: #f5f1e8;
+            --warm: #ebe5d9;
+            --sand: #d4c4b0;
+            --taupe: #c9b8a3;
+            --brown: #6b5d4f;
+            --dark: #4a4a4a;
+            --muted: #8a7968;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f1e8 0%, #ebe5d9 100%);
-            color: #4a4a4a;
+            font-family: 'Jost', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--warm) 100%);
+            color: var(--dark);
             line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ── TOC PAGE ─────────────────────────────────────── */
+        #toc-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .toc-hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .toc-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.8em, 6vw, 4.5em);
+            font-weight: 300;
+            color: var(--brown);
+            letter-spacing: 3px;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .toc-hero h1 em {
+            font-style: italic;
+            color: var(--muted);
+        }
+
+        .toc-hero p {
+            font-size: 1em;
+            color: var(--muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .toc-column {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(107, 93, 79, 0.1);
+            border: 1px solid rgba(201, 184, 163, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .toc-column:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(107, 93, 79, 0.15);
+        }
+
+        .toc-store-header {
+            padding: 24px 20px 18px;
+            text-align: center;
+            border-bottom: 1px solid rgba(201, 184, 163, 0.3);
+        }
+
+        .toc-store-badge {
+            display: inline-block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--brown);
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .toc-store-line {
+            width: 40px;
+            height: 2px;
+            background: var(--taupe);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        .toc-categories {
+            padding: 16px 0;
+            list-style: none;
+        }
+
+        .toc-categories li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 24px;
+            text-decoration: none;
+            color: var(--dark);
+            font-size: 0.95em;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-categories li a:hover {
+            background: rgba(201, 184, 163, 0.2);
+            border-left-color: var(--taupe);
+            color: var(--brown);
+            padding-left: 30px;
+        }
+
+        .toc-categories li a .cat-icon {
+            font-size: 1.1em;
+            width: 22px;
+            text-align: center;
+        }
+
+        .toc-footer-note {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        /* ── CATALOG PAGE ─────────────────────────────────── */
+        #catalog-page {
+            display: none;
             padding: 20px;
         }
 
-        .container {
+        .catalog-container {
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 20px;
-            margin-bottom: 40px;
+        .catalog-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.75);
             backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 20px rgba(107,93,79,0.08);
         }
 
-        h1 {
-            font-size: 2.5em;
-            color: #6b5d4f;
-            margin-bottom: 10px;
+        .catalog-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8em;
             font-weight: 300;
+            color: var(--brown);
             letter-spacing: 2px;
         }
 
-        .subtitle {
-            color: #8a7968;
-            font-size: 1.1em;
-            font-weight: 300;
+        .back-btn {
+            background: none;
+            border: 2px solid var(--taupe);
+            color: var(--brown);
+            padding: 9px 22px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.25s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--taupe);
+            color: white;
+        }
+
+        /* Sticky mini-nav for jumping between stores */
+        .store-jump-nav {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .store-jump-btn {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--taupe);
+            color: var(--brown);
+            padding: 7px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.82em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px rgba(107,93,79,0.1);
+        }
+
+        .store-jump-btn:hover, .store-jump-btn.active {
+            background: var(--brown);
+            color: white;
+            border-color: var(--brown);
         }
 
         .loading {
             text-align: center;
             padding: 60px 20px;
-            font-size: 1.2em;
-            color: #8a7968;
-        }
-
-        .loading::after {
-            content: '...';
-            animation: dots 1.5s steps(4, end) infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
+            font-size: 1.1em;
+            color: var(--muted);
+            font-style: italic;
         }
 
         .website-section {
             margin-bottom: 60px;
-            animation: fadeIn 0.6s ease-in;
+            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .website-header {
-            background: linear-gradient(135deg, #d4c4b0 0%, #c9b8a3 100%);
-            padding: 20px 30px;
+            background: linear-gradient(135deg, var(--sand) 0%, var(--taupe) 100%);
+            padding: 22px 30px;
             border-radius: 15px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
         }
 
         .website-name {
+            font-family: 'Cormorant Garamond', serif;
             font-size: 2em;
-            color: #4a4a4a;
+            color: var(--dark);
             font-weight: 400;
-            margin-bottom: 5px;
         }
 
         .category-section {
@@ -95,26 +278,26 @@
         }
 
         .category-title {
-            font-size: 1.3em;
-            color: #6b5d4f;
+            font-size: 1.15em;
+            color: var(--brown);
             margin-bottom: 20px;
-            padding-left: 10px;
-            border-left: 4px solid #c9b8a3;
+            padding-left: 14px;
+            border-left: 4px solid var(--taupe);
             font-weight: 400;
+            letter-spacing: 0.5px;
         }
 
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px;
-            margin-bottom: 30px;
         }
 
         .product-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255,255,255,0.9);
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
             transition: all 0.3s ease;
             cursor: pointer;
             border: 2px solid transparent;
@@ -122,8 +305,8 @@
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-            border-color: #c9b8a3;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            border-color: var(--taupe);
         }
 
         .product-image {
@@ -132,11 +315,11 @@
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #e8e2d5 0%, #d4cec1 100%);
+            background: linear-gradient(135deg, #e8e2d5, #d4cec1);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #8a7968;
+            color: var(--muted);
             font-size: 3em;
         }
 
@@ -148,11 +331,18 @@
         }
 
         .product-name {
-            font-size: 1.1em;
-            color: #4a4a4a;
+            font-size: 1em;
+            color: var(--dark);
             margin-bottom: 10px;
             font-weight: 500;
-            min-height: 50px;
+            min-height: 46px;
+        }
+
+        .product-description {
+            color: var(--muted);
+            font-size: 0.88em;
+            margin-top: 8px;
+            line-height: 1.5;
         }
 
         .product-meta {
@@ -165,41 +355,35 @@
         }
 
         .product-price {
-            color: #6b5d4f;
-            font-size: 1.1em;
+            color: var(--brown);
+            font-size: 1.05em;
             font-weight: 500;
         }
 
         .product-link {
-            background: linear-gradient(135deg, #c9b8a3 0%, #b8a794 100%);
+            background: linear-gradient(135deg, var(--taupe), #b8a794);
             color: white;
             padding: 8px 20px;
             border-radius: 20px;
             text-decoration: none;
-            font-size: 0.9em;
+            font-size: 0.88em;
             transition: all 0.3s ease;
-            display: inline-block;
+            letter-spacing: 0.5px;
         }
 
         .product-link:hover {
-            background: linear-gradient(135deg, #b8a794 0%, #a89685 100%);
+            background: linear-gradient(135deg, #b8a794, #a89685);
             transform: scale(1.05);
-        }
-
-        .product-description {
-            color: #6b5d4f;
-            font-size: 0.9em;
-            margin-top: 10px;
-            line-height: 1.5;
         }
 
         .stats {
             text-align: center;
             padding: 30px;
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255,255,255,0.5);
             border-radius: 15px;
             margin-top: 40px;
-            color: #6b5d4f;
+            color: var(--brown);
+            font-size: 0.9em;
         }
 
         .error-message {
@@ -212,63 +396,165 @@
         }
 
         @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8em;
+            .toc-grid {
+                grid-template-columns: 1fr;
+                max-width: 360px;
             }
 
-            .product-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-                gap: 15px;
-            }
-
-            .website-name {
-                font-size: 1.5em;
+            .catalog-top-bar {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>My Curated Finds</h1>
-            <p class="subtitle">Handpicked affiliate products, updated daily</p>
-        </header>
 
-        <div id="catalog" class="loading">Loading your catalog</div>
+    <!-- ═══════════════════════════════ TOC PAGE ══════════════════════════════ -->
+    <div id="toc-page">
+        <div class="toc-hero">
+            <h1>My Curated <em>Finds</em></h1>
+            <p>Shop by store &amp; category</p>
+        </div>
 
-        <div id="stats" style="display: none;" class="stats"></div>
+        <div class="toc-grid">
+            <!-- AMAZON -->
+            <div class="toc-column">
+                <div class="toc-store-header">
+                    <div class="toc-store-badge">Amazon</div>
+                    <div class="toc-store-line"></div>
+                </div>
+                <ul class="toc-categories">
+                    <li><a href="#" onclick="goTo('Amazon','Home')"><span class="cat-icon">🏠</span> Home</a></li>
+                    <li><a href="#" onclick="goTo('Amazon','Kitchen')"><span class="cat-icon">🍳</span> Kitchen</a></li>
+                    <li><a href="#" onclick="goTo('Amazon','Fitness')"><span class="cat-icon">🏋️</span> Fitness</a></li>
+                    <li><a href="#" onclick="goTo('Amazon','Fashion')"><span class="cat-icon">👗</span> Fashion</a></li>
+                </ul>
+            </div>
+
+            <!-- TEMU -->
+            <div class="toc-column">
+                <div class="toc-store-header">
+                    <div class="toc-store-badge">Temu</div>
+                    <div class="toc-store-line"></div>
+                </div>
+                <ul class="toc-categories">
+                    <li><a href="#" onclick="goTo('Temu','Home')"><span class="cat-icon">🏠</span> Home</a></li>
+                    <li><a href="#" onclick="goTo('Temu','Kitchen')"><span class="cat-icon">🍳</span> Kitchen</a></li>
+                    <li><a href="#" onclick="goTo('Temu','Fitness')"><span class="cat-icon">🏋️</span> Fitness</a></li>
+                    <li><a href="#" onclick="goTo('Temu','Fashion')"><span class="cat-icon">👗</span> Fashion</a></li>
+                </ul>
+            </div>
+
+            <!-- SHEIN -->
+            <div class="toc-column">
+                <div class="toc-store-header">
+                    <div class="toc-store-badge">Shein</div>
+                    <div class="toc-store-line"></div>
+                </div>
+                <ul class="toc-categories">
+                    <li><a href="#" onclick="goTo('Shein','Home')"><span class="cat-icon">🏠</span> Home</a></li>
+                    <li><a href="#" onclick="goTo('Shein','Kitchen')"><span class="cat-icon">🍳</span> Kitchen</a></li>
+                    <li><a href="#" onclick="goTo('Shein','Fitness')"><span class="cat-icon">🏋️</span> Fitness</a></li>
+                    <li><a href="#" onclick="goTo('Shein','Fashion')"><span class="cat-icon">👗</span> Fashion</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <p class="toc-footer-note">✦ &nbsp; Handpicked affiliate products, updated daily &nbsp; ✦</p>
+    </div>
+
+    <!-- ════════════════════════════ CATALOG PAGE ═════════════════════════════ -->
+    <div id="catalog-page">
+        <div class="catalog-container">
+            <div class="catalog-top-bar">
+                <div class="catalog-title">My Curated Finds</div>
+                <button class="back-btn" onclick="showTOC()">← Back to Menu</button>
+            </div>
+
+            <div class="store-jump-nav" id="store-jump-nav"></div>
+
+            <div id="catalog" class="loading">Loading your catalog…</div>
+            <div id="stats" style="display:none;" class="stats"></div>
+        </div>
     </div>
 
     <script>
-        // 🔧 CONFIGURATION - REPLACE WITH YOUR GOOGLE SHEET ID
-        const SHEET_ID = '1G4IAnNpr4uUtRowbtUsKRksJ5cM3K6VAtDcrqtkO5-Q';
-        const SHEET_NAME = 'Sheet1'; // Change if your sheet has a different name
-        
-        // Google Sheets public CSV URL
-        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
+        const SHEET_ID   = '1G4IAnNpr4uUtRowbtUsKRksJ5cM3K6VAtDcrqtkO5-Q';
+        const SHEET_NAME = 'Sheet1';
+        const SHEET_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
 
+        let catalogLoaded = false;
+        let pendingStore  = null;
+        let pendingCat    = null;
+
+        // ── Navigation ─────────────────────────────────────────────────────────
+        function goTo(store, category) {
+            document.getElementById('toc-page').style.display = 'none';
+            document.getElementById('catalog-page').style.display = 'block';
+
+            if (!catalogLoaded) {
+                pendingStore = store;
+                pendingCat   = category;
+                loadProducts();
+            } else {
+                scrollToSection(store, category);
+            }
+            return false;
+        }
+
+        function showTOC() {
+            document.getElementById('catalog-page').style.display = 'none';
+            document.getElementById('toc-page').style.display = 'flex';
+        }
+
+        function scrollToSection(store, category) {
+            const id = sectionId(store, category);
+            const el = document.getElementById(id);
+            if (el) {
+                setTimeout(() => {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 80);
+            }
+        }
+
+        function sectionId(store, category) {
+            return `section-${store.toLowerCase()}-${category.toLowerCase()}`;
+        }
+
+        // ── Data loading ────────────────────────────────────────────────────────
         async function loadProducts() {
             const catalogDiv = document.getElementById('catalog');
-            const statsDiv = document.getElementById('stats');
+            const statsDiv   = document.getElementById('stats');
 
             try {
-                // Fetch data from Google Sheets
                 const response = await fetch(SHEET_URL);
-                const csvText = await response.text();
-                
-                // Parse CSV
+                const csvText  = await response.text();
                 const products = parseCSV(csvText);
-                
+
                 if (products.length === 0) {
-                    catalogDiv.innerHTML = '<p style="text-align: center; padding: 40px;">No products found. Add some products to your Google Sheet!</p>';
+                    catalogDiv.innerHTML = '<p style="text-align:center;padding:40px;">No products found. Add products to your Google Sheet!</p>';
                     return;
                 }
 
-                // Organize products by Website > Category
                 const organized = organizeProducts(products);
-                
-                // Render catalog
                 catalogDiv.innerHTML = '';
+
+                // Build store jump nav
+                const jumpNav = document.getElementById('store-jump-nav');
+                jumpNav.innerHTML = '';
+                Object.keys(organized).forEach(store => {
+                    const btn = document.createElement('button');
+                    btn.className = 'store-jump-btn';
+                    btn.textContent = store;
+                    btn.onclick = () => {
+                        const firstCat = Object.keys(organized[store])[0];
+                        scrollToSection(store, firstCat);
+                    };
+                    jumpNav.appendChild(btn);
+                });
+
                 let totalProducts = 0;
 
                 for (const [website, categories] of Object.entries(organized)) {
@@ -281,159 +567,132 @@
                     websiteSection.appendChild(websiteHeader);
 
                     for (const [category, items] of Object.entries(categories)) {
-                        const categorySection = document.createElement('div');
-                        categorySection.className = 'category-section';
+                        const catSection = document.createElement('div');
+                        catSection.className = 'category-section';
+                        catSection.id = sectionId(website, category); // ← anchor
 
-                        const categoryTitle = document.createElement('h3');
-                        categoryTitle.className = 'category-title';
-                        categoryTitle.textContent = category;
-                        categorySection.appendChild(categoryTitle);
+                        const catTitle = document.createElement('h3');
+                        catTitle.className = 'category-title';
+                        catTitle.textContent = category;
+                        catSection.appendChild(catTitle);
 
-                        const productGrid = document.createElement('div');
-                        productGrid.className = 'product-grid';
+                        const grid = document.createElement('div');
+                        grid.className = 'product-grid';
 
-                        items.forEach(product => {
+                        items.forEach(p => {
                             totalProducts++;
-                            const card = createProductCard(product);
-                            productGrid.appendChild(card);
+                            grid.appendChild(createProductCard(p));
                         });
 
-                        categorySection.appendChild(productGrid);
-                        websiteSection.appendChild(categorySection);
+                        catSection.appendChild(grid);
+                        websiteSection.appendChild(catSection);
                     }
 
                     catalogDiv.appendChild(websiteSection);
                 }
 
-                // Show stats
                 statsDiv.style.display = 'block';
                 statsDiv.innerHTML = `
-                    <strong>${totalProducts}</strong> products across 
-                    <strong>${Object.keys(organized).length}</strong> websites
-                    <br><small style="margin-top: 10px; display: block; opacity: 0.7;">
+                    <strong>${totalProducts}</strong> products across
+                    <strong>${Object.keys(organized).length}</strong> stores
+                    <br><small style="margin-top:8px;display:block;opacity:0.6;">
                         Last updated: ${new Date().toLocaleString()}
-                    </small>
-                `;
+                    </small>`;
+
+                catalogLoaded = true;
+
+                // Scroll to pending section after load
+                if (pendingStore && pendingCat) {
+                    scrollToSection(pendingStore, pendingCat);
+                    pendingStore = pendingCat = null;
+                }
 
             } catch (error) {
-                console.error('Error loading products:', error);
                 catalogDiv.innerHTML = `
                     <div class="error-message">
-                        <strong>Oops!</strong> Couldn't load products. 
+                        <strong>Oops!</strong> Couldn't load products.
                         <br>Make sure your Google Sheet is public and the Sheet ID is correct.
-                        <br><small>Error: ${error.message}</small>
-                    </div>
-                `;
+                        <br><small>${error.message}</small>
+                    </div>`;
             }
         }
 
+        // ── CSV helpers ─────────────────────────────────────────────────────────
         function parseCSV(csv) {
-            const lines = csv.split('\n');
+            const lines   = csv.split('\n');
             const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
             const products = [];
 
             for (let i = 1; i < lines.length; i++) {
                 if (!lines[i].trim()) continue;
-
-                const values = parseCSVLine(lines[i]);
+                const values  = parseCSVLine(lines[i]);
                 const product = {};
-
-                headers.forEach((header, index) => {
-                    product[header] = values[index] || '';
-                });
-
-                // Only add if it has required fields
+                headers.forEach((h, idx) => product[h] = values[idx] || '');
                 if (product['Product Name'] && product['Website'] && product['Affiliate Link']) {
                     products.push(product);
                 }
             }
-
             return products;
         }
 
         function parseCSVLine(line) {
             const result = [];
-            let current = '';
-            let inQuotes = false;
-
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i];
-
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                } else if (char === ',' && !inQuotes) {
-                    result.push(current.trim());
-                    current = '';
-                } else {
-                    current += char;
-                }
+            let current = '', inQuotes = false;
+            for (const char of line) {
+                if (char === '"') { inQuotes = !inQuotes; }
+                else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+                else { current += char; }
             }
-
             result.push(current.trim());
             return result;
         }
 
         function organizeProducts(products) {
             const organized = {};
-
-            products.forEach(product => {
-                const website = product.Website || 'Other';
-                const category = product.Category || 'General';
-
-                if (!organized[website]) {
-                    organized[website] = {};
-                }
-
-                if (!organized[website][category]) {
-                    organized[website][category] = [];
-                }
-
-                organized[website][category].push(product);
+            products.forEach(p => {
+                const w = p.Website  || 'Other';
+                const c = p.Category || 'General';
+                if (!organized[w])    organized[w]    = {};
+                if (!organized[w][c]) organized[w][c] = [];
+                organized[w][c].push(p);
             });
-
             return organized;
         }
 
+        // ── Card builder ────────────────────────────────────────────────────────
         function createProductCard(product) {
             const card = document.createElement('div');
             card.className = 'product-card';
 
-            // Image
             const imageDiv = document.createElement('div');
             imageDiv.className = 'product-image';
-            
-            if (product['Image URL'] && product['Image URL'].trim()) {
+            if (product['Image URL']?.trim()) {
                 const img = document.createElement('img');
                 img.src = product['Image URL'];
                 img.alt = product['Product Name'];
-                img.onerror = function() {
-                    this.parentElement.innerHTML = '📦';
-                };
+                img.onerror = () => { imageDiv.textContent = '📦'; };
                 imageDiv.appendChild(img);
             } else {
                 imageDiv.textContent = '📦';
             }
             card.appendChild(imageDiv);
 
-            // Product name
             const name = document.createElement('div');
             name.className = 'product-name';
             name.textContent = product['Product Name'];
             card.appendChild(name);
 
-            // Description (if available)
-            if (product.Description && product.Description.trim()) {
+            if (product.Description?.trim()) {
                 const desc = document.createElement('div');
                 desc.className = 'product-description';
                 desc.textContent = product.Description;
                 card.appendChild(desc);
             }
 
-            // Meta section (price and link)
             const meta = document.createElement('div');
             meta.className = 'product-meta';
 
-            if (product.Price && product.Price.trim()) {
+            if (product.Price?.trim()) {
                 const price = document.createElement('div');
                 price.className = 'product-price';
                 price.textContent = product.Price;
@@ -445,24 +704,18 @@
             link.href = product['Affiliate Link'];
             link.target = '_blank';
             link.textContent = 'View Deal';
-            link.onclick = (e) => e.stopPropagation();
+            link.onclick = e => e.stopPropagation();
             meta.appendChild(link);
 
             card.appendChild(meta);
-
-            // Make entire card clickable
-            card.onclick = () => {
-                window.open(product['Affiliate Link'], '_blank');
-            };
-
+            card.onclick = () => window.open(product['Affiliate Link'], '_blank');
             return card;
         }
 
-        // Load products on page load
-        loadProducts();
-
-        // Optional: Auto-refresh every 5 minutes
-        setInterval(loadProducts, 5 * 60 * 1000);
+        // Auto-refresh every 5 mins (only if catalog is visible)
+        setInterval(() => {
+            if (catalogLoaded) loadProducts();
+        }, 5 * 60 * 1000);
     </script>
 </body>
 </html>
